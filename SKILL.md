@@ -354,8 +354,29 @@ THREE.Scene() + PerspectiveCamera(fov:60, near:0.1, far:1000) + WebGLRenderer(an
    - 混合模式下自动创建 SVG overlay 层
 
 4. **输出**
-   - 直接输出 HTML 代码
+   - 将 HTML 写入工作目录下的文件（默认 `lesson.html`，或根据主题命名）
    - 不添加任何说明
+
+5. **启动本地预览服务**
+   - HTML 文件写入后，自动启动本地 HTTP 服务器供用户浏览器访问
+   - 使用 Python http.server（后台运行），端口默认 8080，若被占用则自动递增尝试 8081、8082...
+   - 启动前先检查并 kill 之前由本 skill 启动的旧服务进程（避免端口冲突）
+   - 服务目录为 HTML 文件所在目录
+
+   ```bash
+   # 清理旧进程
+   pkill -f "python3 -m http.server.*--directory" 2>/dev/null || true
+
+   # 启动服务（后台运行）
+   cd <html文件所在目录>
+   python3 -m http.server 8080 --bind 0.0.0.0 &
+
+   # 输出访问地址
+   echo "🌐 预览地址: http://localhost:8080/<文件名>.html"
+   ```
+
+   - 告知用户访问地址，格式：`🌐 预览地址: http://localhost:<端口>/<文件名>.html`
+   - 如果用户后续要求停止服务，执行 `pkill -f "python3 -m http.server"`
 
 ---
 
