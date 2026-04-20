@@ -1,7 +1,5 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { getClient } from '@/lib/claude';
 import { INTERACTIVE_SYSTEM_PROMPT } from '@/lib/prompts';
-
-const client = new Anthropic();
 
 export async function POST(request: Request) {
   const { topic } = await request.json();
@@ -10,7 +8,7 @@ export async function POST(request: Request) {
     return Response.json({ error: '请输入主题' }, { status: 400 });
   }
 
-  const stream = await client.messages.create({
+  const stream = await getClient().messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 16000,
     system: [

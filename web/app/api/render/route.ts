@@ -1,8 +1,6 @@
-import Anthropic from '@anthropic-ai/sdk';
+import { getClient } from '@/lib/claude';
 import { VIDEO_SYSTEM_PROMPT } from '@/lib/prompts';
 import { renderToMp4 } from '@/lib/renderer';
-
-const client = new Anthropic();
 
 export async function POST(request: Request) {
   const { topic, previewHtml } = await request.json();
@@ -12,7 +10,7 @@ export async function POST(request: Request) {
   }
 
   // Step 1: Generate HyperFrames-compatible timeline HTML
-  const message = await client.messages.create({
+  const message = await getClient().messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 16000,
     system: [
